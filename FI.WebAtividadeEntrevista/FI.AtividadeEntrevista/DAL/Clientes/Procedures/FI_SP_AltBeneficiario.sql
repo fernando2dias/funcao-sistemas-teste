@@ -1,0 +1,19 @@
+﻿CREATE PROC FI_SP_AltBeneficiario
+    @NOME          VARCHAR (50),
+	@CPF		   VARCHAR (11),
+	@Id           BIGINT
+AS
+BEGIN
+	IF NOT EXISTS(SELECT CPF FROM dbo.BENEFICIARIOS WHERE (CPF = @CPF AND Id <> @Id))
+		BEGIN
+		UPDATE BENEFICIARIOS 
+		SET 
+		NOME = @NOME,
+		CPF = @CPF
+		WHERE Id = @Id
+		END
+	ELSE
+		BEGIN
+		RAISERROR('CPF já cadastrado!', 16, 1)
+		END
+END
